@@ -28,22 +28,22 @@ architecture Behavioral of IFetch is
  type rom_type is array (0 to 31) of std_logic_vector(31 downto 0);
   signal ROM : rom_type := (
     B"000000_00000_00000_00001_00000_100000",  -- 0: add $1, $0, $0  -- X"00000020" ; $1 = $0 + $0 (adica $1 = 0), i=0, contor elem  
-    B"100011_00000_00100_0000000000000000",    -- 1: lw $4, 0($0)    -- X"8C040000" ; $4 = Mem[$0 + 0] (Óncarc„ Ón $4 valoarea de la adresa 0 = lungime array
+    B"100011_00000_00100_0000000000000000",    -- 1: lw $4, 0($0)    -- X"8C040000" ; $4 = Mem[$0 + 0] (√Æncarc√£ √Æn $4 valoarea de la adresa 0 = lungime array
     B"000000_00000_00000_00010_00000_100000",  -- 2: add $2, $0, $0  -- X"00000020" ; $2 = $0 + $0 (adica $2 = 0 = initializare index array), adresa elem current
     B"001000_00000_00101_1111111111111111",    -- 3: addi $5, $0, -1 -- X"2005FFFF" ; $5 = $0 + (-1) (adica $5 = -1 = default max value)
-    B"000100_00001_00100_0000000000001100",    -- 4: beq $1, $4, 12  -- X"1024000C" ; dac„ $1 == $4, sari cu 12 instructiuni Ónainte 
-    B"100011_00010_00011_0000000000000000",    -- 5: lw $3, 0($2)    -- X"8C430000" ; elem cur $3 = Mem[$2 + 0] (Óncarc„ Ón $3 valoarea de la adresa $2 = citeste elem curent din array)
-    B"001100_00011_00110_0000000000000001",    -- 6: andi $6, $3, 1  -- X"30660001" ; $6 = $3 AND 1 (testare dac„ $3 e par/impar)
-    B"000100_00110_00000_0000000000000011",    -- 7: bne $6, $0, 3   -- X"14C00003" ; dac„ $6 == 0 (par) sari cu 3 instruc?iuni
-    B"000100_00101_00000_1111111111111110",    -- 8: beq $5, $0, -2  -- X"15A0FFFE" ; dac„ $5 == $0, sari cu -2 instruc?iuni pentru a reincerca 
+    B"000100_00001_00100_0000000000001100",    -- 4: beq $1, $4, 12  -- X"1024000C" ; dac√£ $1 == $4, sari cu 12 instructiuni √Ænainte 
+    B"100011_00010_00011_0000000000000000",    -- 5: lw $3, 0($2)    -- X"8C430000" ; elem cur $3 = Mem[$2 + 0] (√Æncarc√£ √Æn $3 valoarea de la adresa $2 = citeste elem curent din array)
+    B"001100_00011_00110_0000000000000001",    -- 6: andi $6, $3, 1  -- X"30660001" ; $6 = $3 AND 1 (testare dac√£ $3 e par/impar)
+    B"000100_00110_00000_0000000000000011",    -- 7: bne $6, $0, 3   -- X"14C00003" ; dac√£ $6 == 0 (par) sari cu 3 instruc?iuni
+    B"000100_00101_00000_1111111111111110",    -- 8: beq $5, $0, -2  -- X"15A0FFFE" ; dac√£ $5 == $0, sari cu -2 instruc?iuni pentru a reincerca 
     B"000000_00011_00101_00110_00000_100010",  -- 9: sub $6, $3, $5  -- X"00653022" ; $6 = $3 - $5 = compara elem curent cu anteriorul
-    B"000101_00110_00000_1111111111111101",    -- 10: bne $6, $0, -3 -- X"14C0FFFD" ; dac„ $6 ? 0, sari cu -3 instructiuni daca nr e impar
+    B"000101_00110_00000_1111111111111101",    -- 10: bne $6, $0, -3 -- X"14C0FFFD" ; dac√£ $6 ? 0, sari cu -3 instructiuni daca nr e impar
     B"000000_00011_00000_00101_00000_100000",  -- 11: add $5, $3, $0 -- X"00602820" ; $5 = $3 + 0 (adica $5 = $3 = actualizarevaloare curenta)
     B"000010_00000000000000000000001000",      -- 12: j 8          -- X"08000008" ; sari la adresa 8 (instructiunea 8 = reia verificarea pentru urmatorul element din array)
-    B"001000_00010_00010_0000000000000100",    -- 13: addi $2, $2, 4 -- X"20420004" ; $2 = $2 + 4 (avanseaz„ la urm„torul element Ón memorie)
-    B"001000_00001_00001_0000000000000001",    -- 14: addi $1, $1, 1 -- X"20210001" ; $1 = $1 + 1 (incrementeaz„ $1)
+    B"001000_00010_00010_0000000000000100",    -- 13: addi $2, $2, 4 -- X"20420004" ; $2 = $2 + 4 (avanseaz√£ la urm√£torul element √Æn memorie)
+    B"001000_00001_00001_0000000000000001",    -- 14: addi $1, $1, 1 -- X"20210001" ; $1 = $1 + 1 (incrementeaz√£ $1)
     B"000010_00000000000000000000000011",      -- 15: j 3          -- X"08000003" ; sari la instructiunea 3 (reia bucla principala)
-    B"101011_00000_00101_0000000000000000",    -- 16: sw $5, 0($0)   -- X"AC050000" ; salveaz„ $5 Ón Mem[0] 
+    B"101011_00000_00101_0000000000000000",    -- 16: sw $5, 0($0)   -- X"AC050000" ; salveaz√£ $5 √Æn Mem[0] 
 
     others => X"00000000" 
   );
@@ -75,7 +75,7 @@ begin
   end process;
 
   -- Instruction fetch
-  ROM_output <= ROM(conv_integer(PC_internal(6 downto 2))); -- doar 32 intrari => adres„m cu PC[6:2]
+  ROM_output <= ROM(conv_integer(PC_internal(6 downto 2))); -- doar 32 intrari => adres√£m cu PC[6:2]
 
   PC <= PC_internal;
   Instruction <= ROM_output;
